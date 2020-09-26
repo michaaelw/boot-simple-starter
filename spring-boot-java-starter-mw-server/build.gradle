@@ -1,0 +1,72 @@
+//noinspection GroovyAssignabilityCheck
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id "io.spring.dependency-management" version "1.0.10.RELEASE"
+}
+
+group 'com.shapestone'
+version '1.0.1'
+
+//noinspection GroovyAssignabilityCheck
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    api project(":spring-boot-java-starter-mw-application")
+
+    implementation 'org.springframework.boot:spring-boot-dependencies:2.3.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+//    components {
+//        withModule('org.springframework:spring-beans') {
+//            allVariants {
+//                withDependencyConstraints {
+//                    // Need to patch constraints because snakeyaml is an optional dependency
+//                    it.findAll { it.name == 'snakeyaml' }.each { it.version { strictly '1.19' } }
+//                }
+//            }
+//        }
+//    }
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.7.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+    testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.0'
+}
+
+bootRun {
+    final String debugPort = 8181
+    final String serverPort = 8282
+    jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=$debugPort"
+    final String executedDir = System.getProperty("user.dir")
+    final String separator = File.separator
+
+    String configLocation
+    if (executedDir.endsWith("spring-boot-java-starter-mw")) {
+        configLocation = executedDir + separator + "spring-boot-java-starter-mw-server" + separator + "config"
+    } else {
+        configLocation = executedDir + separator + "config"
+    }
+
+    String location = ""
+    location += "file:$configLocation" + separator + "database.properties,"
+    location += "file:$configLocation" + separator + "environment.properties,"
+    location += "file:$configLocation" + separator + "application-external.properties"
+
+    logger.info("configLocation = {}", configLocation)
+    logger.info("location = {}", location)
+
+    String logbackLocal = "$configLocation" + separator + "logback-local.xml"
+
+    systemProperty('spring.config.additional-location', "$location")
+    systemProperty('server.port', serverPort)
+    systemProperty('logging.config', "$logbackLocal")
+}

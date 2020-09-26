@@ -1,0 +1,13 @@
+
+rootProject.name = 'spring-boot-java-starter-mw'
+include 'spring-boot-java-starter-mw-application'
+include 'spring-boot-java-starter-mw-infrastructure'
+include 'spring-boot-java-starter-mw-domain-model'
+include 'spring-boot-java-starter-mw-domain-service'
+include 'spring-boot-java-starter-mw-presentation'
+include 'spring-boot-java-starter-mw-application-service'
+include 'spring-boot-java-starter-mw-domain-port'
+include 'spring-boot-java-starter-mw-server'
+//include 'spring-boot-java-starter-mw-util'
+include 'spring-boot-java-starter-mw-application-dto'
+

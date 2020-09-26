@@ -1,0 +1,19 @@
+plugins {
+    //id 'java'
+    id 'maven'
+    id 'maven-publish'
+}
+
+group = 'com.shapestone'
+version = '1.0.0'
+
+//sourceCompatibility = 11
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+//configurations.all {
+//    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+//}
