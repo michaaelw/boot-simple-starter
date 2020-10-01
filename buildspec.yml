@@ -26,4 +26,4 @@ artifacts:
   #  type: zip
   files:
     - build/distributions/java-boot-simple-service-starter.zip
-  discard-paths: ye
+  discard-paths: yes
