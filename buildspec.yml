@@ -1,0 +1,29 @@
+version: 0.2
+
+env:
+  parameter-store:
+    CurrentEnvironment: CurrentEnv
+#  secrets-manager:
+#    AWS_ACCESS_KEY_ID_PARAM: hlal/devdefault:aws_access_key_id
+#    AWS_SECRET_ACCESS_KEY_PARAM: hlal/devdefault:aws_secret_access_key
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+      - chmod +x gradlew
+  build:
+    commands:
+      - echo Build started on `date`
+      - ./gradlew clean buildZip
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  #  type: zip
+  files:
+    - build/distributions/java-boot-simple-service-starter.zip
+  discard-paths: ye
