@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'java-library'
-    id 'maven'
     id 'maven-publish'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
     id "io.spring.dependency-management" version "1.0.10.RELEASE"
@@ -22,6 +21,14 @@ processResources {
 
 task buildZip(type: Zip) {
     archiveFileName = project.name + ".zip"
+
+    from 'build/libs'
+    include project.name + '-' + project.version + ".jar"
+
+    from projectDir
+    include 'config/**/*'
+    include 'deploy/**/*'
+
     from compileJava
     from processResources
     //noinspection GroovyAssignabilityCheck
@@ -75,14 +82,14 @@ bootRun {
     final String configLocation = executedDir + separator + separator + "config"
 
     String location = ""
-    location += "file:$configLocation" + separator + "database.properties,"
-    location += "file:$configLocation" + separator + "environment.properties,"
-    location += "file:$configLocation" + separator + "application-external.properties"
+    location += "file:$configLocation" + separator + "dev-local/database.properties,"
+    location += "file:$configLocation" + separator + "dev-local/environment.properties,"
+    location += "file:$configLocation" + separator + "dev-local/application-external.properties"
 
     logger.info("configLocation = {}", configLocation)
     logger.info("location = {}", location)
 
-    final String logbackLocal = "$configLocation" + separator + "logback-local.xml"
+    final String logbackLocal = "$configLocation" + separator + "dev-local/logback-dev-local.xml"
 
     systemProperty('spring.config.additional-location', "$location")
     systemProperty('server.port', serverPort)
