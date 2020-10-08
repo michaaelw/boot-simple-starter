@@ -19,7 +19,7 @@ processResources {
     }
 }
 
-task buildZip(type: Zip) {
+task zip(dependsOn: jar, type: Zip) {
     archiveFileName = project.name + ".zip"
 
     from 'build/libs'
@@ -27,7 +27,8 @@ task buildZip(type: Zip) {
 
     from projectDir
     include 'config/**/*'
-    include 'deploy/**/*'
+    include 'deploy/scripts/*'
+    include 'appspec.yml'
 
     from compileJava
     from processResources
@@ -37,7 +38,7 @@ task buildZip(type: Zip) {
     }
 }
 
-build.dependsOn buildZip
+build.dependsOn zip
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-dependencies:2.3.4.RELEASE'

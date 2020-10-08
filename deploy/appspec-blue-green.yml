@@ -13,29 +13,29 @@ permissions:
 
 hooks:
   BeforeInstall:
-    - location: scripts/install.sh
+    - location: deploy/scripts/install.sh
       runas: root
   ApplicationStart:
-    - location: scripts/appstop.sh
+    - location: deploy/scripts/appstop.sh
       timeout: 120
       runas: app
-    - location: scripts/appstart.sh
+    - location: deploy/scripts/appstart.sh
       timeout: 360
       runas: app
   ValidateService:
-    - location: scripts/validate.sh
+    - location: deploy/scripts/validate.sh
       runas: app
   BeforeAllowTraffic:
-    - location: scripts/automation-tests.sh
+    - location: deploy/scripts/automation-tests.sh
       runas: app
   AfterAllowTraffic:
-    - location: scripts/deregister-from-test-target-group.sh
+    - location: deploy/scripts/deregister-from-test-target-group.sh
       runas: app
-    - location: scripts/enable-instance-registry.sh
+    - location: deploy/scripts/enable-instance-registry.sh
       runas: app
   ApplicationStop:
-    - location: scripts/appstop.sh
+    - location: deploy/scripts/appstop.sh
       runas: app
   BeforeBlockTraffic:
-    - location: scripts/disable-instance-registry.sh
+    - location: deploy/scripts/disable-instance-registry.sh
       runas: app

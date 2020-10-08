@@ -1,0 +1,47 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/app/java-boot-simple-service-starter/
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: app
+    group: app
+    mode: 755
+
+hooks:
+  BeforeInstall:
+#    - location: scripts/install.sh
+#      timeout: 120
+#      runas: root
+  ApplicationStart:
+    - location: scripts/appstart.sh
+      timeout: 360
+      runas: app
+  ValidateService:
+    - location: scripts/validate.sh
+      timeout: 120
+      runas: app
+  BeforeAllowTraffic:
+#    - location: scripts/automation-tests.sh
+#      timeout: 120
+#      runas: app
+  AfterAllowTraffic:
+#    - location: scripts/deregister-from-test-target-group.sh
+#      runas: app
+#    - location: scripts/enable-instance-registry.sh
+#      timeout: 120
+#      runas: app
+  ApplicationStop:
+    - location: scripts/appshutdown.sh.sh
+      timeout: 120
+      runas: app
+  BeforeBlockTraffic:
+#    - location: scripts/disable-instance-registry.sh
+#      timeout: 120
+#      runas: app
+#    - location: scripts/appstop.sh
+#      timeout: 120
+#      runas: app
