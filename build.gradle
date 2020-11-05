@@ -14,6 +14,33 @@ repositories {
     mavenCentral()
 }
 
+processResources {
+    filesMatching('info.properties') {
+        expand(project.properties)
+    }
+}
+
+task zip(dependsOn: jar, type: Zip) {
+    archiveFileName = project.name + ".zip"
+
+    from 'build/libs'
+    include project.name + '-' + project.version + ".jar"
+
+    from projectDir
+    include 'config/**/*'
+    include 'deploy/scripts/*'
+    include 'appspec.yml'
+
+    from compileJava
+    from processResources
+    //noinspection GroovyAssignabilityCheck
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn zip
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-dependencies:2.3.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -57,14 +84,14 @@ bootRun {
     final String configLocation = executedDir + separator + separator + "config"
 
     String location = ""
-    location += "file:$configLocation" + separator + "database.properties,"
-    location += "file:$configLocation" + separator + "environment.properties,"
-    location += "file:$configLocation" + separator + "application-external.properties"
+    location += "file:$configLocation" + separator + "dev-local/database.properties,"
+    location += "file:$configLocation" + separator + "dev-local/environment.properties,"
+    location += "file:$configLocation" + separator + "dev-local/application-external.properties"
 
     logger.info("configLocation = {}", configLocation)
     logger.info("location = {}", location)
 
-    final String logbackLocal = "$configLocation" + separator + "logback-local.xml"
+    final String logbackLocal = "$configLocation" + separator + "dev-local/logback-dev-local.xml"
 
     systemProperty('spring.config.additional-location', "$location")
     systemProperty('server.port', serverPort)
