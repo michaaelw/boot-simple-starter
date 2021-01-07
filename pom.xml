@@ -146,6 +146,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--suppress MavenModelInspection -->
                 <version>2.4.1</version>
                 <executions>
                     <execution>
